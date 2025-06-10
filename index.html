@@ -3,9 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Fun Video Game</title>
+  <title>Happy Birthday</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
 </head>
 
@@ -14,7 +13,7 @@
   <div class="container">
     <button id="playButton1" class="floating-btn">Click Me</button>
 
-    <div id="videoContainer1" class="video-box">
+    <div id="videoContainer1" class="video-box" style="display: none;">
       <video id="video1" controls>
         <source src="happy bday.mp4" type="video/mp4">
         Your browser does not support the video tag.
@@ -24,9 +23,13 @@
     <div id="secondSection" style="display: none;">
       <hr class="separator">
       <button id="playButton2">Click Me Too</button>
-    </div>
 
-    <div id="videoContainer2" class="video-box">
+      <div id="messageAboveSecondVideo" style="display: none;">
+        <p>Party Party 🥳🥳🥳🥳🥳</p>
+      </div>
+      </div>
+
+    <div id="videoContainer2" class="video-box" style="display: none;">
       <video id="video2" controls>
         <source src="party.mp4" type="video/mp4">
         Your browser does not support the video tag.
@@ -43,10 +46,19 @@
       const container1 = document.getElementById('videoContainer1');
       const container2 = document.getElementById('videoContainer2');
       const secondSection = document.getElementById('secondSection');
-      const container = document.querySelector('.container');
+      const messageAboveSecondVideo = document.getElementById('messageAboveSecondVideo'); // Get the new message element
 
       let clickCount = 0;
       const maxClicks = 5;
+
+      const buttonMessages = [
+        "Click Me",
+        "Again!",
+        "One more time!",
+        "Almost there...",
+        "Just a little more!",
+        "Surprise!"
+      ];
 
       function randomPosition() {
         const btnWidth = btn1.offsetWidth;
@@ -77,6 +89,15 @@
 
       btn1.addEventListener('click', () => {
         clickCount++;
+
+        if (clickCount <= maxClicks) {
+            if (buttonMessages[clickCount]) {
+                btn1.textContent = buttonMessages[clickCount];
+            } else if (clickCount === maxClicks) {
+                btn1.textContent = "Loading...";
+            }
+        }
+
         if (clickCount < maxClicks) {
           randomPosition();
         } else {
@@ -92,12 +113,25 @@
       });
 
       btn2.addEventListener('click', () => {
-        container1.style.display = 'none';
-        container2.style.display = 'block';
-        video2.play();
-        launchConfetti();
-        btn2.style.display = 'none';
+        // Show the message before playing the second video
+        messageAboveSecondVideo.style.display = 'block';
+
+        // Add a small delay if you want the message to appear before the video immediately plays
+        // For example, a 500ms delay:
+        // setTimeout(() => {
+            container1.style.display = 'none';
+            container2.style.display = 'block';
+            video2.play();
+            launchConfetti();
+            btn2.style.display = 'none';
+        // }, 500); // Uncomment this block if you want a delay
+
       });
+
+        // Initialize button text on load
+        if (buttonMessages[0]) {
+            btn1.textContent = buttonMessages[0];
+        }
     });
   </script>
 
